@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: poja-prime - Computation and API
+Description: poja-prime-franco - Computation and API
 
 Globals:
   Function:
@@ -22,11 +22,11 @@ Globals:
     Environment:
       Variables:
         ENV: !Ref Env
-        AWS_SQS_QUEUE_URL: !Sub '{{resolve:ssm:/poja-prime/${Env}/sqs/mailbox-queue-url}}'
-        AWS_EVENTBRIDGE_BUS: !Sub '{{resolve:ssm:/poja-prime/${Env}/eventbridge/bus-name}}'
-        DATABASE_URL: !Sub '{{resolve:ssm:/poja-prime/${Env}/db/url}}'
-        DATABASE_USERNAME: !Sub '{{resolve:ssm:/poja-prime/${Env}/db/username}}'
-        DATABASE_PASSWORD: !Sub '{{resolve:ssm:/poja-prime/${Env}/db/password}}'
+        AWS_SQS_QUEUE_URL: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/sqs/mailbox-queue-url}}'
+        AWS_EVENTBRIDGE_BUS: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/eventbridge/bus-name}}'
+        DATABASE_URL: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/db/url}}'
+        DATABASE_USERNAME: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/db/username}}'
+        DATABASE_PASSWORD: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/db/password}}'
         
 
 Parameters:
@@ -39,7 +39,7 @@ Resources:
     Properties:
       Handler: com.company.prime.ApiEventHandler::handleRequest
       MemorySize: 512
-      Role: !Sub '{{resolve:ssm:/poja-prime/${Env}/execution/role-arn}}'
+      Role: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/execution/role-arn}}'
       Events:
         ApiCall:
           Type: Api
@@ -52,12 +52,12 @@ Resources:
     Properties:
       Handler: com.company.prime.MailboxEventHandler::handleRequest
       MemorySize: 1024
-      Role: !Sub '{{resolve:ssm:/poja-prime/${Env}/execution/role-arn}}'
+      Role: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/execution/role-arn}}'
       Events:
         AllEvents:
           Type: SQS
           Properties:
-            Queue: !Sub '{{resolve:ssm:/poja-prime/${Env}/sqs/mailbox-queue-arn}}'
+            Queue: !Sub '{{resolve:ssm:/poja-prime-franco/${Env}/sqs/mailbox-queue-arn}}'
             BatchSize: 5
 
   ApplicationResourceGroup:
@@ -76,7 +76,7 @@ Resources:
   ApiUrlSSM:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: !Join [ '', [ /poja-prime/, !Ref Env, /api/url ] ]
+      Name: !Join [ '', [ /poja-prime-franco/, !Ref Env, /api/url ] ]
       Type: String
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
 

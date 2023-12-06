@@ -1,4 +1,4 @@
-app_name: poja-prime
+app_name: poja-prime-franco
 cli_version: 4.0.0
 custom_java_deps: poja-custom-java-deps.txt
 custom_java_env_vars: poja-custom-java-env-vars.txt
